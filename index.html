@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cloud Lab Desktop</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/browser.css">
+<link rel="stylesheet" href="css/files.css">
+<link rel="stylesheet" href="css/installer.css">
+<link rel="stylesheet" href="css/vbox.css">
+<link rel="stylesheet" href="css/ubuntu.css">
+<link rel="stylesheet" href="css/guide.css">
+<link rel="stylesheet" href="css/exp2.css">
+<link rel="stylesheet" href="css/exp3.css">
+<link rel="stylesheet" href="css/exp4.css">
+<link rel="stylesheet" href="css/exp5.css">
+<link rel="stylesheet" href="css/widgets.css">
+<!-- glass.css must stay last so the glass settings win -->
+<link rel="stylesheet" href="css/glass.css">
+</head>
+<body>
+
+<!-- Layer 0: wallpaper -->
+<div id="wallpaper"><img src="assets/bg.png" alt="" draggable="false"></div>
+
+<!-- Layer 1: desktop (icons and windows will go here) -->
+<div id="desktop"></div>
+
+<!-- Layer 2: dock (glass layers are static markup, icons are added by js/dock.js) -->
+<nav id="dock" class="dock" aria-label="Dock">
+  <div class="dock-glass" aria-hidden="true">
+    <div class="glass-body"></div>
+    <div class="glass-rim"></div>
+    <div class="glass-light">
+      <div class="glass-chroma"></div>
+      <div class="glass-specular"></div>
+      <div class="glass-sweep"></div>
+      <div class="glass-shade"></div>
+    </div>
+    <div class="glass-ring"></div>
+  </div>
+  <div class="dock-icons"></div>
+</nav>
+
+<!-- Refraction filter used by the old glass rim (kept so nothing else breaks) -->
+<svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0">
+  <defs>
+    <filter id="glass-refraction">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016 0.024" numOctaves="2" seed="7" result="noise"/>
+      <feGaussianBlur in="noise" stdDeviation="1.4" result="soft"/>
+      <feDisplacementMap in="SourceGraphic" in2="soft" scale="16" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
+<!-- icons.js must load first: guide.js uses Icons.* -->
+<script src="js/icons.js"></script>
+<script src="js/state.js"></script>
+<script src="js/windows.js"></script>
+<script src="js/dock.js"></script>
+<script src="js/browser.js"></script>
+<script src="js/files.js"></script>
+<script src="js/installer.js"></script>
+<script src="js/vbox.js"></script>
+<script src="js/vbsettings.js"></script>
+<script src="js/ubuntu.js"></script>
+<script src="js/terminal.js"></script>
+<script src="js/exp3.js"></script>
+<script src="js/exp4.js"></script>
+<script src="js/exp5.js"></script>
+<script src="js/vm.js"></script>
+<script src="js/widgets.js"></script>
+<script src="js/glass.js"></script>
+<script src="js/main.js"></script>
+<script src="js/persist.js"></script>
+<script src="js/switcher.js"></script>
+<script src="js/guide.js"></script>
+<script src="js/guide3.js"></script>
+<script src="js/guide4.js"></script>
+<script src="js/guide5.js"></script>
+</body>
+</html>

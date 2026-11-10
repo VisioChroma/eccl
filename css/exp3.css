@@ -1,0 +1,7 @@
+/* Experiment 3: pages served by the App Engine dev server and Firefox's connection error */
+.ff-raw { box-sizing: border-box; min-height: 100%; padding: 8px; background: #fff; color: #000; font: 16px/1.2 "Times New Roman", "Liberation Serif", Times, serif; user-select: text; }
+.ff-raw h1 { margin: .67em 0; font-size: 2em; font-weight: 700; } .ff-raw h2 { margin: .83em 0; font-size: 1.5em; font-weight: 700; } .ff-raw p { margin: 1em 0; } .ff-raw title { display: none; }
+.ff-admin { font-family: Ubuntu, "Segoe UI", sans-serif; font-size: 14px; } .ff-admin table { border-collapse: collapse; } .ff-admin th, .ff-admin td { padding: 6px 16px; border: 1px solid #ccc; text-align: left; }
+.ff-neterr { max-width: 640px; margin: 8vh auto; padding: 0 28px; color: #15141a; font: 15px/1.55 Ubuntu, "Segoe UI", sans-serif; }
+.ff-neterr h1 { margin: 0 0 14px; font-size: 30px; font-weight: 400; } .ff-neterr ul { padding-left: 22px; } .ff-neterr li { margin: 6px 0; }
+.ff-neterr button { margin-top: 14px; padding: 8px 22px; border: 0; border-radius: 6px; background: #0060df; color: #fff; font: inherit; cursor: pointer; } .ff-neterr button:hover { background: #0250bb; }

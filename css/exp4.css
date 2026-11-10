@@ -1,0 +1,30 @@
+/* Experiment 4: VirtualBox Settings window, transition message box, guide extras */
+.vbs { width: min(780px, calc(100% - 16px)); height: min(470px, calc(100% - 16px)); }
+.vbs-row { display: flex; flex: 1; min-height: 0; background: #232323; }
+.vbs-cats { flex: none; width: 170px; padding: 8px 0; background: #1b1b1b; border-right: 1px solid #333; overflow: auto; }
+.vbs-cat { display: flex; align-items: center; gap: 10px; padding: 9px 14px; cursor: pointer; color: #ddd; font-size: 13px; } .vbs-cat i { font-style: normal; width: 18px; text-align: center; }
+.vbs-cat:hover { background: #2a2a2a; } .vbs-cat.sel { background: #3b1a24; color: #fff; box-shadow: inset 3px 0 0 #e11d48; }
+.vbs-page { flex: 1; min-width: 0; padding: 14px 18px; overflow: auto; } .vbs-page h3 { margin: 0 0 12px; font-size: 17px; font-weight: 600; }
+.vbs-page select { width: 100%; background: #2d2d2d; color: #eee; border: 1px solid #3c3c3c; border-radius: 3px; padding: 4px 6px; font: 13px "Segoe UI", sans-serif; min-height: 26px; } .vbs-page select:disabled { color: #888; }
+.vbs-page select:focus { border-color: #e11d48; outline: none; }
+.vbs-tabs { display: flex; gap: 2px; margin-bottom: -1px; } .vbs-tabs span { padding: 5px 14px; font-size: 12px; background: #2a2a2a; border: 1px solid #3c3c3c; border-bottom: 0; border-radius: 4px 4px 0 0; color: #999; } .vbs-tabs .sel { background: #232323; color: #fff; }
+.vbs-card { border: 1px solid #3c3c3c; padding: 14px; border-radius: 0 4px 4px 4px; } .chk0 { display: block; margin-bottom: 12px; font-size: 13px; } .chk0 input { accent-color: #e11d48; }
+.vbs-adv { margin-top: 12px; font-size: 13px; } .vbs-adv summary { cursor: pointer; margin-bottom: 8px; color: #ccc; }
+.vbs-warn { margin: 0 0 10px; padding: 7px 10px; background: #3a2d12; border: 1px solid #7a5a14; border-radius: 4px; color: #f6d68b; font-size: 12px; }
+.vbs-na { padding: 20px 0; }
+.vbs-shwrap { display: flex; gap: 8px; } .vbs-shtbl { flex: 1; min-width: 0; border: 1px solid #3c3c3c; background: #1c1c1c; min-height: 180px; font-size: 12px; }
+.vbs-shh, .vbs-shrow { display: grid; grid-template-columns: 1fr 1.4fr .8fr .8fr .4fr; gap: 6px; padding: 5px 8px; } .vbs-shh { background: #2c2c2c; color: #bbb; border-bottom: 1px solid #3c3c3c; }
+.vbs-shg { padding: 5px 8px; color: #ccc; } .vbs-shrow { cursor: pointer; padding-left: 22px; } .vbs-shrow:hover { background: #2a2a2a; } .vbs-shrow.sel { background: #5b1a2b; }
+.vbs-shbtn { display: flex; flex-direction: column; gap: 6px; } .vbs-shbtn button { width: 30px; height: 28px; border: 1px solid #555; background: #3a3a3a; color: #eee; border-radius: 3px; cursor: pointer; font-size: 15px; } .vbs-shbtn button:hover:not(:disabled) { background: #4a4a4a; } .vbs-shbtn button:disabled { opacity: .4; cursor: default; }
+.vbs-addov, .vbs-pick { z-index: 8; } .vbs-add-box { width: min(480px, calc(100% - 16px)); overflow: visible; } .vbs-add-b { padding: 16px 18px 8px; } .vbs-add-b .chk { margin-left: 115px; }
+.vbs-pathw { position: relative; } .vbs-path { width: 100%; text-align: left; background: #2d2d2d; color: #eee; border: 1px solid #3c3c3c; border-radius: 3px; padding: 4px 8px; min-height: 26px; font: 13px "Segoe UI", sans-serif; cursor: pointer; } .vbs-path:hover { border-color: #666; }
+.vbs-menu { position: absolute; left: 0; right: 0; top: 100%; z-index: 9; background: #2d2d2d; border: 1px solid #555; border-radius: 3px; box-shadow: 0 8px 20px rgba(0,0,0,.5); } .vbs-menu[hidden] { display: none; }
+.vbs-menu div { padding: 6px 10px; cursor: pointer; font-size: 13px; } .vbs-menu div:hover { background: #e11d48; }
+.hp-mk { display: flex; gap: 8px; margin-top: 10px; } .hp-mk input { flex: 1; } .hp-sys { cursor: default; opacity: .55; } .hp-list .hp-item.sel { background: #5b1a2b; }
+/* transition message box (after Experiment 3) */
+.e4-ov { position: fixed; inset: 0; z-index: 3000; display: grid; place-items: center; background: rgba(8, 10, 20, .55); backdrop-filter: blur(3px); animation: e4in .25s ease; }
+.e4-box { width: min(440px, calc(100vw - 32px)); padding: 26px 28px 22px; border-radius: 16px; background: rgba(28, 30, 44, .94); border: 1px solid rgba(255,255,255,.14); box-shadow: 0 24px 70px rgba(0,0,0,.6); color: #eef; font-family: "Segoe UI", system-ui, sans-serif; text-align: center; }
+.e4-box .e4-ic { font-size: 44px; line-height: 1; } .e4-box h2 { margin: 10px 0 6px; font-size: 21px; } .e4-box p { margin: 0 0 18px; color: #b9bdd6; font-size: 14px; line-height: 1.5; }
+.e4-btns { display: flex; flex-direction: column; gap: 10px; } .e4-btns button { padding: 11px 16px; border-radius: 10px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.07); color: #fff; font: 600 14px "Segoe UI", sans-serif; cursor: pointer; transition: transform .12s, background .12s; }
+.e4-btns button:hover { transform: translateY(-1px); background: rgba(255,255,255,.14); } .e4-btns .go { background: linear-gradient(135deg, #8b5cf6, #6366f1); border-color: transparent; } .e4-btns .go:hover { background: linear-gradient(135deg, #9d75f8, #7c7ff3); }
+@keyframes e4in { from { opacity: 0; transform: scale(.97); } to { opacity: 1; transform: none; } }

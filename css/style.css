@@ -1,0 +1,91 @@
+:root { box-sizing: border-box; }
+*, *::before, *::after { box-sizing: inherit; }
+html, body { margin: 0; height: 100%; overflow: hidden; font-family: "Segoe UI", system-ui, sans-serif; }
+
+#wallpaper { position: fixed; inset: 0; z-index: 0; }
+#wallpaper img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; user-select: none; -webkit-user-drag: none; }
+#desktop   { position: fixed; inset: 0; z-index: 1; }
+
+/* ---------- Dock ---------- */
+.dock {
+  --rim: 7px;          /* set from JS (kept for compatibility) */
+  --dock-radius: 26px; /* set from JS */
+  position: fixed; z-index: 1000;
+  left: 50%; transform: translateX(-50%);
+  bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  touch-action: manipulation; user-select: none; -webkit-user-select: none;
+}
+.dock-icons { position: relative; width: 100%; }
+
+.dock-item { position: absolute; bottom: 0; cursor: pointer; transform-origin: bottom center; }
+.dock-item img { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; -webkit-user-drag: none;
+                 filter: drop-shadow(0 2px 4px rgba(0,0,0,.28)); }
+
+/* Running-app indicator: hidden unless the item has .is-open */
+.dock-item .dot {
+  position: absolute; left: 50%; bottom: -6px; width: 4px; height: 4px; margin-left: -2px; border-radius: 50%;
+  background: rgba(255,255,255,.92); box-shadow: 0 0 3px rgba(0,0,0,.45);
+  opacity: 0; transition: opacity .2s;
+}
+.dock-item.is-open .dot { opacity: 1; }
+
+.dock-item::after {
+  content: attr(data-name); position: absolute; left: 50%; bottom: 100%; transform: translate(-50%, -10px);
+  padding: 4px 10px; border-radius: 8px; font-size: 12px; color: #fff; white-space: nowrap;
+  background: rgba(30,30,30,.65); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  opacity: 0; pointer-events: none; transition: opacity .15s;
+}
+@media (hover: hover) { .dock-item:hover::after { opacity: 1; } }
+
+/* ---------- Glass (macOS style: soft frosted pane, thin bright edge, no color fringing) ---------- */
+.dock-glass {
+  position: absolute; inset: 0; border-radius: var(--dock-radius); overflow: hidden; pointer-events: none;
+  box-shadow:
+    0 0 0 .5px rgba(0,0,0,.28),               /* hairline outer edge */
+    0 16px 36px -10px rgba(0,0,0,.38),        /* main drop shadow */
+    0 4px 10px -4px rgba(0,0,0,.22);          /* contact shadow */
+}
+
+/* frosted body fills the whole dock */
+.glass-body {
+  position: absolute; inset: 0; border-radius: inherit;
+  background: linear-gradient(to bottom, rgba(255,255,255,.30) 0%, rgba(255,255,255,.14) 100%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%) brightness(1.08);
+  backdrop-filter: blur(28px) saturate(190%) brightness(1.08);
+}
+
+/* the old refractive rim and color fringe are turned off for a cleaner, realistic look */
+.glass-rim, .glass-chroma { display: none; }
+
+/* light layers */
+.glass-light { position: absolute; inset: 0; isolation: isolate; overflow: hidden; border-radius: inherit; }
+
+/* soft highlight that follows the pointer (very subtle) */
+.glass-specular {
+  position: absolute; left: 30%; top: 28%; width: 260px; height: 260px; margin: -130px 0 0 -130px;
+  mix-blend-mode: soft-light; will-change: transform;
+  background-image: radial-gradient(closest-side, rgba(255,255,255,.45), rgba(255,255,255,.12) 55%, transparent 80%);
+}
+
+/* thin bright line along the top edge */
+.glass-sweep {
+  position: absolute; top: 0; left: 20%; width: 60%; height: 1.5px;
+  mix-blend-mode: plus-lighter; will-change: transform;
+  background-image: linear-gradient(90deg, transparent, rgba(255,255,255,.75) 35%, rgba(255,255,255,.75) 65%, transparent);
+}
+
+/* gentle darkening toward the bottom for depth */
+.glass-shade { position: absolute; inset: 0; border-radius: inherit; background-image: linear-gradient(to bottom, transparent 55%, rgba(0,0,0,.07) 100%); }
+
+/* glossy border: bright top edge, soft sides, faint bottom edge */
+.glass-ring {
+  position: absolute; inset: 0; border-radius: inherit;
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.26),
+    inset 0 1px 0 rgba(255,255,255,.65),
+    inset 0 -1px 0 rgba(255,255,255,.12);
+}
+
+/* new dock icon pops in */
+.dock-item.new img { animation: dock-pop .6s ease-out; }
+@keyframes dock-pop { 0% { transform: scale(0); } 60% { transform: scale(1.25); } 100% { transform: scale(1); } }

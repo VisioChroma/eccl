@@ -1,0 +1,34 @@
+.fx-path { flex: 1; min-width: 0; height: 30px; display: flex; align-items: center; padding: 0 14px; border: 1px solid #e5e5e5; border-radius: 15px; background: #fff; font: 13px system-ui, sans-serif; color: #404040; white-space: pre; overflow: hidden; }
+.fx-body { flex: 1; min-height: 0; display: flex; background: #fff; font: 14px system-ui, sans-serif; color: #262626; }
+.fx-side { flex: none; width: 240px; padding: 10px; overflow: auto; background: #fafafa; border-right: 1px solid #e5e5e5; }
+.fx-main { flex: 1; min-width: 0; padding: 16px; overflow: auto; }
+.fx-status { padding: 6px 14px; border-top: 1px solid #e5e5e5; background: #fafafa; font: 12px system-ui, sans-serif; color: #525252; white-space: pre; overflow: hidden; text-overflow: ellipsis; }
+
+/* ---------- Liquid glass inside the Files window (frame comes from .win.liquid-glass in browser.css) ---------- */
+.win.liquid-glass .fx-body { background: transparent; border-radius: 10px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,.35); }
+.win.liquid-glass .fx-side { background: rgba(255,255,255,.22); border-right: 1px solid rgba(255,255,255,.4); }
+.win.liquid-glass .fx-main { background: #fff; border-radius: 0 10px 10px 0; }
+.win.liquid-glass .fx-status { margin-top: 6px; border: 1px solid rgba(255,255,255,.4); border-radius: 8px; background: rgba(255,255,255,.25); }
+.win.liquid-glass .fx-row:hover { background: rgba(255,255,255,.35); }
+.win.liquid-glass .fx-row.sel { background: rgba(125,211,252,.45); }
+
+/* tree (FilesystemItem) */
+.fx-tree, .fx-tree ul { list-style: none; margin: 0; padding: 0; } .fx-kids ul { padding-left: 24px; }
+.fx-row { display: flex; align-items: center; gap: 6px; padding: 3px 6px; border-radius: 6px; cursor: pointer; }
+.fx-row:hover { background: #f0f0f0; } .fx-row.sel { background: #e0f2fe; }
+.fx-row img { object-fit: contain; flex: none; } .fx-row svg { flex: none; }
+.fx-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fx-chev { width: 16px; height: 16px; padding: 0; margin: 0; border: 0; background: none; cursor: pointer; display: grid; place-items: center; }
+.fx-chev svg { transition: transform .35s cubic-bezier(.3,0,.2,1); } li.open > .fx-row .fx-chev svg { transform: rotate(90deg); }
+.fx-sp { flex: none; width: 16px; }
+.fx-kids { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s cubic-bezier(.3,0,.2,1); } li.open > .fx-kids { grid-template-rows: 1fr; }
+.fx-kids > ul { overflow: hidden; min-height: 0; }
+
+/* right pane */
+.fx-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.fx-tile { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 10px 6px; border: 1px solid transparent; border-radius: 8px; text-align: center; cursor: default; user-select: none; }
+.fx-tile img { object-fit: contain; } .fx-tile span { max-width: 100%; font-size: 12.5px; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; word-break: break-all; }
+.fx-tile:hover { background: #f5f5f5; } .fx-tile.sel { background: #e0f2fe; border-color: #7dd3fc; }
+.fx-empty { margin: 60px 0; text-align: center; color: #9ca3af; }
+
+.fx-tile { touch-action: manipulation; outline: none; } .fx-tile:focus-visible { border-color: #7dd3fc; }

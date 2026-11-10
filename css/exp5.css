@@ -1,0 +1,77 @@
+/* Experiment 5: Hadoop Single Node Cluster & WordCount completion modal */
+.e5-ov {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: grid;
+  place-items: center;
+  background: rgba(8, 10, 20, .58);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  animation: e5in .25s ease;
+}
+
+.e5-box {
+  width: min(450px, calc(100vw - 32px));
+  padding: 26px 28px 22px;
+  border-radius: 16px;
+  background: rgba(28, 30, 44, .95);
+  border: 1px solid rgba(255, 255, 255, .14);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .65);
+  color: #eef;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  text-align: center;
+}
+
+.e5-box .e5-ic {
+  font-size: 44px;
+  line-height: 1;
+}
+
+.e5-box h2 {
+  margin: 10px 0 6px;
+  font-size: 21px;
+}
+
+.e5-box p {
+  margin: 0 0 18px;
+  color: #b9bdd6;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.e5-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.e5-btns button {
+  padding: 11px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, .18);
+  background: rgba(255, 255, 255, .07);
+  color: #fff;
+  font: 600 14px "Segoe UI", sans-serif;
+  cursor: pointer;
+  transition: transform .12s, background .12s;
+}
+
+.e5-btns button:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, .14);
+}
+
+.e5-btns .go {
+  background: linear-gradient(135deg, #10b981, #059669);
+  border-color: transparent;
+}
+
+.e5-btns .go:hover {
+  background: linear-gradient(135deg, #34d399, #10b981);
+}
+
+@keyframes e5in {
+  from { opacity: 0; transform: scale(.97); }
+  to { opacity: 1; transform: none; }
+}

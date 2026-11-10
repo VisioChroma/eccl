@@ -1,0 +1,10 @@
+/* Experiment 2: nano, terminal extras, VM close dialog */
+.nn { position: absolute; inset: 0; z-index: 6; display: flex; flex-direction: column; background: #300a24; color: #eee; font: 15px/1.35 "Ubuntu Mono", "DejaVu Sans Mono", Consolas, monospace; }
+.nn-h { display: flex; justify-content: space-between; background: #eee; color: #300a24; padding: 0 4px; } .nn-h span { flex: 1; } .nn-h span:last-child { text-align: right; } .nn-h b { font-weight: 400; }
+.nn-t { flex: 1; resize: none; border: 0; outline: 0; padding: 0 4px; background: none; color: #eee; font: inherit; white-space: pre; overflow: auto; user-select: text; }
+.nn-s { display: flex; min-height: 21px; padding: 0 4px; } .nn-s i { margin: 0 auto; padding: 0 8px; background: #eee; color: #300a24; font-style: normal; } .nn-s input { flex: 1; border: 0; outline: 0; background: none; color: #eee; font: inherit; }
+.nn-k { display: grid; grid-template-columns: repeat(6, 1fr); padding: 0 2px 2px; font-size: 13px; white-space: nowrap; } .nn-k b { margin-right: 3px; padding: 0 3px; background: #eee; color: #300a24; font-weight: 400; }
+.t-in.hide { color: transparent; caret-color: transparent; }
+.term .er { color: #ef2929; font-weight: 700; } .term .wn { color: #ad7fa8; font-weight: 700; } .term .nt { color: #34e2e2; font-weight: 700; }
+.vmw-screen:focus { outline: 0; }
+.nvm.cv { width: min(380px, calc(100% - 16px)); } .cv-b { padding: 14px 20px; } .cv-b p { margin: 0 0 6px; } .cv-b label { display: block; margin: 9px 0; } .cv-b input { accent-color: #e11d48; margin-right: 8px; }

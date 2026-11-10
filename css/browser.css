@@ -1,0 +1,76 @@
+/* ---------- Window (light theme from the BrowserMockupCard) ---------- */
+.win { position: absolute; display: flex; flex-direction: column; min-width: min(420px, calc(100vw - 16px)); min-height: 300px;
+  background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; overflow: hidden; resize: both; transform-origin: bottom center;
+  box-shadow: 0 20px 60px -12px rgba(0,0,0,.35), 0 4px 14px rgba(0,0,0,.12); animation: win-in .18s ease-out;
+  transition: transform .22s ease, opacity .22s ease; }
+.win:not(.focused) { box-shadow: 0 10px 30px -10px rgba(0,0,0,.25); }
+.win.min { transform: translateY(40%) scale(.3); opacity: 0; pointer-events: none; }
+.win.closing { transform: scale(.96); opacity: 0; }
+.win.max { left: 8px !important; top: 8px !important; width: calc(100% - 16px) !important; height: calc(100% - 108px) !important; resize: none; }
+@keyframes win-in { from { transform: scale(.94); opacity: 0; } }
+
+/* ---------- Liquid glass window frame (class added by windows.js, filter built by glass.js) ---------- */
+.win.liquid-glass {
+  --glass-refraction: .5;
+  --glass-dispersion: .2;
+  --glass-frost: .35;
+  --glass-bezel: 12;                 /* px, keeps the lens effect inside the visible frame */
+  padding: 0 6px 6px;                /* the glass frame around the white page area */
+  border: 1px solid rgba(255,255,255,.5);
+  box-shadow: 0 20px 60px -12px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.15);
+}
+.win.liquid-glass:not(.focused) { box-shadow: 0 10px 30px -10px rgba(0,0,0,.28); }
+.win.liquid-glass .bw-bar { margin: 0 -6px 6px; background: rgba(255,255,255,.28); border-bottom: 1px solid rgba(255,255,255,.45); }
+.win.liquid-glass .bw-body { border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.08), 0 2px 8px rgba(0,0,0,.12); }
+
+.bw-bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; background: #fafafa; border-bottom: 1px solid #e5e5e5; touch-action: none; user-select: none; position: relative; }
+.bw-dots { display: flex; gap: 7px; margin-right: 4px; }
+.bw-dots button { width: 12px; height: 12px; padding: 0; border: 0; border-radius: 50%; cursor: pointer; }
+.bw-dots .r { background: #f87171; } .bw-dots .y { background: #fbbf24; } .bw-dots .g { background: #34d399; }
+.bw-btn { width: 28px; height: 28px; border: 0; border-radius: 50%; background: none; color: #525252; font-size: 20px; line-height: 1; cursor: pointer; display: grid; place-items: center; }
+.bw-btn:hover:not(:disabled) { background: #ececec; } .bw-btn:disabled { opacity: .35; cursor: default; }
+.bw-url { flex: 1; min-width: 0; }
+.bw-url input { width: 100%; height: 30px; border: 1px solid #e5e5e5; border-radius: 15px; background: #fff; padding: 0 14px; font: 13px system-ui, sans-serif; color: #404040; outline: none; }
+.bw-url input:focus { border-color: #1a73e8; box-shadow: 0 0 0 2px rgba(26,115,232,.2); }
+.bw-dl { --p: 100; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(#1a73e8 calc(var(--p) * 1%), #e5e5e5 0); }
+.bw-dl[hidden] { display: none; } .bw-dl .bw-btn { width: 26px; height: 26px; background: #fafafa; } .bw-dl.busy .bw-btn { color: #1a73e8; }
+
+.bw-body { position: relative; flex: 1; min-height: 0; }
+.bw-view { position: absolute; inset: 0; overflow: auto; background: #fff; color: #202124; font: 14px/1.55 Arial, sans-serif; }
+.bw-view a { cursor: pointer; }
+.bw-status { position: absolute; left: 0; bottom: 0; max-width: 70%; padding: 2px 10px; font: 12px system-ui; color: #444; background: #f1f3f4; border: 1px solid #dadce0; border-left: 0; border-bottom: 0; border-radius: 0 6px 0 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0; transition: opacity .1s; pointer-events: none; }
+.bw-status.show { opacity: 1; }
+.bw-toast { position: absolute; left: 50%; bottom: 20px; transform: translate(-50%, 20px); padding: 9px 16px; border-radius: 20px; background: #303134; color: #fff; font: 13px system-ui; opacity: 0; pointer-events: none; transition: .2s; }
+.bw-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+.bw-pop { position: absolute; right: 10px; top: 6px; width: 340px; max-width: calc(100% - 20px); background: #fff; border: 1px solid #dadce0; border-radius: 10px; box-shadow: 0 8px 28px rgba(0,0,0,.22); z-index: 5; font: 13px system-ui, sans-serif; color: #202124; overflow: hidden; }
+.pop-h { padding: 10px 14px; font-weight: 600; border-bottom: 1px solid #eee; }
+.dl-row { display: flex; gap: 10px; padding: 10px 14px; } .dl-row + .dl-row { border-top: 1px solid #f1f1f1; }
+.dl-ic { flex: none; width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center; font-size: 10px; font-weight: 700; color: #fff; background: #1a73e8; } .dl-ic.iso { background: #e95420; }
+.dl-t { min-width: 0; flex: 1; } .dl-t b { display: block; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .dl-t small { color: #5f6368; }
+.pb { height: 4px; margin-top: 6px; border-radius: 2px; background: #e8eaed; overflow: hidden; } .pb i { display: block; height: 100%; background: #1a73e8; }
+
+/* ---------- Fake Google ---------- */
+.g-logo { font: 700 64px/1 Arial, sans-serif; letter-spacing: -2px; } .g-logo.sm { font-size: 26px; }
+.g-home { display: flex; flex-direction: column; align-items: center; padding: 14vh 16px 0; gap: 26px; }
+.g-form { display: flex; gap: 10px; width: 100%; max-width: 580px; }
+.g-form input { flex: 1; min-width: 0; height: 44px; border: 1px solid #dfe1e5; border-radius: 22px; padding: 0 20px; font-size: 16px; outline: none; }
+.g-form input:hover, .g-form input:focus { box-shadow: 0 1px 6px rgba(32,33,36,.28); border-color: transparent; }
+.g-form button { border: 1px solid #f8f9fa; background: #f8f9fa; border-radius: 6px; padding: 0 16px; font-size: 14px; color: #3c4043; cursor: pointer; } .g-form button:hover { border-color: #dadce0; }
+.g-top { display: flex; align-items: center; gap: 24px; padding: 14px 24px; border-bottom: 1px solid #ebebeb; } .g-top .g-form { max-width: 600px; }
+.g-list { padding: 8px 24px 40px; max-width: 700px; } .g-res { margin-top: 22px; } .g-res p { margin: 2px 0; color: #4d5156; } .g-res .hint { color: #1a73e8; }
+.g-crumb { font-size: 13px; color: #202124; } .g-title { font-size: 20px; color: #1a0dab; text-decoration: none; } .g-title:hover { text-decoration: underline; }
+
+/* ---------- virtualbox.org ---------- */
+.vb { display: flex; min-height: 100%; } .vb aside { flex: none; width: 190px; padding: 18px; background: #f3f5f8; border-right: 1px solid #dde2ea; display: flex; flex-direction: column; gap: 8px; }
+.vb aside a { color: #183a61; text-decoration: none; } .vb aside a:hover { text-decoration: underline; } .vb-logo { font-weight: 700; font-size: 20px; color: #183a61; margin-bottom: 10px; }
+.vb main { padding: 24px 32px; max-width: 760px; } .vb h1 { color: #183a61; margin-top: 0; } .vb main a { color: #1a5fb4; }
+.btn { display: inline-block; padding: 11px 22px; border-radius: 6px; color: #fff !important; text-decoration: none; font-weight: 600; } .vb-btn { background: #183a61; } .ub-btn { background: #e95420; }
+@media (max-width: 640px) { .vb { flex-direction: column; } .vb aside { width: auto; flex-direction: row; flex-wrap: wrap; } }
+
+/* ---------- ubuntu.com ---------- */
+.ub header { display: flex; gap: 22px; align-items: center; padding: 12px 28px; background: #333; } .ub header a { color: #fff; text-decoration: none; font-size: 14px; } .ub header b { color: #fff; margin-right: auto; font-size: 18px; } .ub header b::first-letter { color: #e95420; }
+.ub-hero { padding: 70px 28px; color: #fff; background: linear-gradient(135deg, #772953, #e95420); } .ub-hero h1 { font-size: 48px; margin: 0 0 6px; }
+.ub-body { padding: 32px 28px; max-width: 820px; } .ub-body h1 { margin-top: 0; } .ub-body a:not(.btn) { color: #0e8420; }
+.ub-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; } .ub-cards > div, .ub-card { border: 1px solid #d9d9d9; border-radius: 6px; padding: 16px; } .ub-card small { display: block; margin-top: 10px; color: #666; }
+.nf { padding: 14vh 24px; text-align: center; } .nf a { color: #1a73e8; }
