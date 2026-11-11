@@ -148,6 +148,9 @@
 
   const EXP = { goal: "Transfer a file from one Ubuntu virtual machine to another with SCP (Secure Copy over SSH). VM1 is the receiver, VM2 is the sender. Finally try the VirtualBox shared folder as an alternative.", end: "✅ Experiment 4 complete! You placed both VMs on the same network, installed the SSH server, copied files in both directions with scp, and used a VirtualBox shared folder as the alternative method." };
 
+  // The alternative method (shared folder, groups E1..E5) only starts when the person chooses it in the box shown after the main method.
+  const altStart = steps.findIndex((s) => s.g && /^E1\./.test(s.g));
+
   /* ---------- the sticky note ---------- */
   const note = document.createElement("aside"); note.className = "sticky"; note.style.display = "none";
   document.getElementById("desktop").appendChild(note);
@@ -167,12 +170,12 @@
     if (e.target.closest(".sn-min")) note.classList.toggle("collapsed");
     if (e.target.closest(".sn-hint")) { showHints = !showHints; lastSig = ""; }
   });
-  function renderNote(cur) {
+  function renderNote(cur, gate) {
     const all = cur < 0;
     let html = `<div class="sn-head">${Switcher.title(4)}<span><button class="sn-hint ${showHints ? "" : "off"}" title="Show / hide pointers">${showHints ? Icons.eye : Icons.eyeOff}</button><button class="sn-min" title="Collapse"><span class="i-min">${Icons.minus}</span><span class="i-max">${Icons.plus}</span></button></span></div><div class="sn-body">${Switcher.banner()}<p class="sn-goal">${EXP.goal}</p>`;
     const groups = [];
     steps.forEach((s, i) => { if (s.g) groups.push({ name: s.g, idx: [] }); groups[groups.length - 1].idx.push(i); });
-    groups.forEach((g) => {
+    groups.filter((g) => Lab.flags.altOk || altStart < 0 || g.idx[0] < altStart).forEach((g) => {   // the alternative method stays hidden until it is chosen
       const complete = g.idx.every((i) => all || i < cur), live = g.idx.includes(cur);
       if (complete) html += `<div class="sn-s done"><i>${Icons.check}</i><span>${g.name}</span></div>`;
       else if (!live) html += `<h4>${g.name} · ${g.idx.length} step${g.idx.length > 1 ? "s" : ""}</h4>`;
@@ -181,6 +184,7 @@
         g.idx.forEach((i) => { const s = steps[i], st = all || i < cur ? "done" : i === cur ? "cur" : ""; html += `<div class="sn-s ${st}"><i>${st === "done" ? Icons.check : i + 1}</i><span>${val(s.t)}<small>${val(s.tip)}</small></span></div>`; });
       }
     });
+    if (gate) html += `<p class="sn-foot">${Icons.checkCircle}<span>Main method complete. Choose what to do next in the box.</span></p>`;
     if (all) html += `<p class="sn-foot">${Icons.checkCircle}<span>${EXP.end.replace(/^[^A-Za-z0-9]+/, "")}</span></p>`;
     note.innerHTML = html + "</div>";
   }
@@ -268,8 +272,28 @@
       if (b.dataset.a === "go5") goExp5(); else Switcher.restart(4);
     });
   }
+  /* ---------- message box after the MAIN method (before the alternative method) ---------- */
+  let altBox = null, altTimer = 0;
+  function closeAltDialog() { if (altBox) { altBox.remove(); altBox = null; } }
+  function showAltDialog() {
+    altTimer = 0; if (altBox) return;
+    altBox = document.createElement("div"); altBox.className = "e4-ov";
+    altBox.innerHTML = `<div class="e4-box"><div class="e4-ic">${Icons.checkCircle}</div><h2>Main method complete</h2><p>You copied files between the two VMs with SCP. Would you like to try the alternative method (a VirtualBox shared folder), repeat the main method, or go to Experiment 5?</p><div class="e4-btns"><button class="go" data-a="alt">Try the alternative method</button><button data-a="again">Retry the main method</button><button data-a="go5">Go to Experiment 5</button></div></div>`;
+    document.body.appendChild(altBox);
+    altBox.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-a]"); if (!b) return;
+      closeAltDialog();
+      if (b.dataset.a === "alt") { Lab.flags.altOk = true; Lab.emit("guide"); }   // the shared-folder steps start now
+      else if (b.dataset.a === "again") Switcher.restart(4);
+      else goExp5();
+    });
+  }
   // Go to Experiment 5 (not built yet): the Experiment 4 guide hides and the Ubuntu home screen of VM1 is shown
   function goExp5() {
+    // Experiment 5 exists in the switcher: open its own world (its own guide and sticky note)
+    const e5 = window.Switcher && Switcher.EXPS && Switcher.EXPS.find((e) => e.n === 5);
+    if (e5 && !e5.soon) { Switcher.goTo(5); return; }
+    // fallback while Experiment 5 is not enabled in the switcher: just hide this guide
     Lab.flags.e4end = "go5"; Lab.flags.exp5 = true;
     try { const w2 = wv(1); if (w2 && !w2.minimized) w2.minimize(); } catch (e) {}
     try { const bw = boxW(); if (bw && !bw.minimized) bw.minimize(); } catch (e) {}
@@ -294,7 +318,7 @@
     if (!fin && dialogTimer) { clearTimeout(dialogTimer); dialogTimer = 0; }
     if (exp !== 3 && dialog) closeDialog();
     // 2. Experiment 4 guide
-    if (exp !== 4) { note.style.display = "none"; if (dialog4) closeDialog4(); return; }
+    if (exp !== 4) { note.style.display = "none"; if (dialog4) closeDialog4(); if (altBox) closeAltDialog(); return; }
     if (Lab.flags.exp5) { note.style.display = "none"; layer.classList.add("off"); return; }   // Experiment 5: the Experiment 4 guide is finished
     note.style.display = "";
     if (window.Exp4) Exp4.hostDir("C:\\shared");   // the host folder C:\shared already exists in this simulator
@@ -308,14 +332,19 @@
       return (sticky[i] = ok);
     });
     const cur = done.indexOf(false);
+    if (!Lab.flags.altOk && altStart > 0 && done.slice(altStart).some(Boolean)) Lab.flags.altOk = true;   // already inside the alternative method (older save)
+    const gate = altStart > 0 && !Lab.flags.altOk && cur >= altStart;   // main method finished, alternative not chosen yet
+    if (gate && !altBox && !altTimer) altTimer = setTimeout(showAltDialog, 2500);   // a short pause so the last step can be seen
+    if (!gate && altTimer) { clearTimeout(altTimer); altTimer = 0; }
+    if (!gate && altBox) closeAltDialog();
     // 3. Experiment 4 finished -> message box
     Switcher.report(4, done.filter(Boolean).length, steps.length);
     if (cur < 0 && !Lab.flags.e4end && !Lab.flags.e4dlg && !dialog4 && !timer4) timer4 = setTimeout(showDialog4, 2500);
     if ((cur >= 0 || Lab.flags.e4end) && timer4) { clearTimeout(timer4); timer4 = 0; }
-    if (cur !== lastCur) { lastCur = cur; if (cur >= 0) { try { raise(steps[cur]); } catch (e) {} } }
-    const sig = JSON.stringify([done, cur, showHints, ip2(), Switcher.blocked()]);
-    if (sig !== lastSig) { lastSig = sig; renderNote(cur); }
-    place(cur);
+    if (cur !== lastCur) { lastCur = cur; if (cur >= 0 && !gate) { try { raise(steps[cur]); } catch (e) {} } }
+    const sig = JSON.stringify([done, cur, showHints, ip2(), Switcher.blocked(), gate, !!Lab.flags.altOk]);
+    if (sig !== lastSig) { lastSig = sig; renderNote(cur, gate); }
+    place(gate ? -1 : cur);   // no pointer while the person is choosing
   }
   function frame() {
     try { tick(); } catch (e) { console.error("guide4:", e); }

@@ -53,23 +53,18 @@ window.Switcher = (() => {
     s.stk = {};
     s.flags = flagsFor(n);
     if (n === 5 && Array.isArray(s.vms) && s.vms.length) {
-      s.vms.forEach((v, idx) => {
+      // Experiment 5 runs on the second VM (Ubuntu2 / user2) as in the manual; with only one VM it runs on that one
+      const lab = s.vms[s.vms.length > 1 ? 1 : 0];
+      s.vms.forEach((v) => {
         if (!v.rec) return;
         delete v.rec.e5;
-        if (idx === 0) {
-          v.rec.state = "running";
-          v.rec.ui = { apps: [], term: null }; // clean Ubuntu home screen on VM1
-        } else {
-          v.rec.state = "off"; // keep VM2 powered off so it doesn't clutter Experiment 5
-        }
+        if (v === lab) { v.rec.state = "running"; v.rec.ui = { apps: [], term: null }; }   // clean Ubuntu desktop
+        else v.rec.state = "off";
       });
-      const vm1 = s.vms[0];
-      s.active = vm1.id;
-      s.layout = (s.layout || []).filter((l) => l.id === "vbox" || l.id === "vm:" + vm1.id);
-      s.layout.forEach((l) => { if (l.id === "vbox") l.min = true; if (l.id === "vm:" + vm1.id) l.min = false; });
-      if (!s.layout.some((l) => l.id === "vm:" + vm1.id)) {
-        s.layout.push({ id: "vm:" + vm1.id, x: 90, y: 24, w: 860, h: 560, min: false, max: false, z: 20 });
-      }
+      s.active = lab.id;
+      s.layout = (s.layout || []).filter((l) => l.id === "vbox" || l.id === "vm:" + lab.id);
+      s.layout.forEach((l) => { if (l.id === "vbox") l.min = true; if (l.id === "vm:" + lab.id) l.min = false; });
+      if (!s.layout.some((l) => l.id === "vm:" + lab.id)) s.layout.push({ id: "vm:" + lab.id, x: 90, y: 24, w: 860, h: 560, min: false, max: false, z: 20 });
     }
     return s;
   }

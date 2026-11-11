@@ -1,0 +1,92 @@
+/* First-visit intro layer. Everything is prefixed .in- so it cannot touch any existing style.
+   The glass look is the same as the "Experiment complete" box (endbox.js). */
+
+/* while the intro is open, the guide pointers and the sticky note wait behind it */
+body.in-on #guide-layer { display: none !important; }
+body.in-on .sticky { visibility: hidden; }
+
+.in-ov { position: fixed; inset: 0; z-index: 3000; display: grid; place-items: center; padding: 16px; background: rgba(8,12,28,.34); opacity: 0; transition: opacity .3s ease-out; }
+.in-ov.on { opacity: 1; }
+
+/* ---------- glass card (same layers as endbox.js) ---------- */
+.in-card { position: relative; overflow: hidden; display: flex; width: min(520px, 100%); border-radius: 44px; color: #fff;
+  font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; text-shadow: 0 1px 3px rgba(0,0,0,.45), 0 0 16px rgba(0,0,0,.18);
+  transform: translateY(8px) scale(.98); transition: transform .3s ease-out; }
+.in-ov.on .in-card { transform: none; }
+.in-filter { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; z-index: -1; }
+.in-svg { background: rgba(255,255,255,.07); -webkit-backdrop-filter: var(--in-filter) saturate(1.5) brightness(1.1); backdrop-filter: var(--in-filter) saturate(1.5) brightness(1.1);
+  box-shadow: 0 0 2px 1px rgba(255,255,255,.5) inset, 0 0 14px 5px rgba(255,255,255,.2) inset, 0 8px 28px rgba(17,17,26,.14), 0 20px 60px rgba(17,17,26,.14); }
+.in-fallback { background: rgba(255,255,255,.13); -webkit-backdrop-filter: blur(14px) saturate(1.7) brightness(1.1); backdrop-filter: blur(14px) saturate(1.7) brightness(1.1);
+  box-shadow: inset 0 1px 0 0 rgba(255,255,255,.7), inset 0 -1px 0 0 rgba(255,255,255,.2), 0 0 14px 4px rgba(255,255,255,.18) inset, 0 8px 28px rgba(17,17,26,.16), 0 20px 60px rgba(17,17,26,.16); }
+.in-sheen, .in-rim { position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+.in-sheen { background: linear-gradient(135deg, rgba(255,255,255,.38) 0%, rgba(255,255,255,.04) 40%, transparent 62%, rgba(255,255,255,.14) 100%); }
+.in-rim { z-index: 2; padding: 2px; background: linear-gradient(150deg, rgba(255,255,255,.9), rgba(255,255,255,.12) 45%, rgba(255,255,255,.1) 60%, rgba(255,255,255,.65));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+
+/* ---------- content ---------- */
+.in-ov .in-pane { position: relative; z-index: 1; width: 100%; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px); overflow-y: auto; padding: 34px 34px 26px;
+  scrollbar-width: thin; scrollbar-color: rgba(255,255,255,.45) transparent; }
+.in-ov .in-pane.in-fade { animation: in-fade .28s ease-out; }
+@keyframes in-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+.in-ov .in-ic { display: grid; place-items: center; width: 50px; height: 50px; border-radius: 50%; margin-bottom: 16px; background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.6); color: #fff; }
+.in-ov .in-ic .ic { width: 28px; height: 28px; }
+.in-ov .in-pane > h2 { margin: 0 0 8px; font-size: 22px; font-weight: 700; letter-spacing: -.01em; color: #fff; }
+.in-ov .in-pane > p { margin: 0 0 14px; color: #fff; opacity: .96; }
+.in-ov .in-pane > p.in-sm { font-size: 13px; opacity: .86; }
+.in-ov .in-pane code { padding: 1px 6px; border-radius: 6px; background: rgba(255,255,255,.2); font: 12.5px ui-monospace, Consolas, monospace; text-shadow: none; }
+.in-ov .in-skip { position: absolute; top: 20px; right: 26px; padding: 4px 8px; border: 0; background: none; color: #fff; opacity: .8; font: 600 13px system-ui, sans-serif; text-shadow: inherit; cursor: pointer; }
+.in-ov .in-skip:hover { opacity: 1; text-decoration: underline; }
+
+/* the five programs */
+.in-ov .in-exps { list-style: none; margin: 4px 0 14px; padding: 0; display: grid; gap: 7px; }
+.in-ov .in-exps li { display: flex; align-items: center; gap: 12px; padding: 8px 12px 8px 8px; border-radius: 99px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.28); }
+.in-ov .in-exps b { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,.94); color: #0f172a; font: 700 13px system-ui, sans-serif; text-shadow: none; }
+.in-ov .in-exps span { font-weight: 600; }
+
+/* password */
+.in-ov .in-chip { display: inline-block; padding: 2px 11px; border-radius: 99px; background: rgba(255,255,255,.94); color: #0f172a; font: 700 14px ui-monospace, Consolas, monospace; text-shadow: none; }
+.in-ov .in-term { margin: 4px 0 14px; padding: 12px 14px; border-radius: 14px; background: rgba(10,14,30,.7); border: 1px solid rgba(255,255,255,.25); font: 12.5px/1.6 ui-monospace, Consolas, monospace; text-shadow: none; }
+.in-ov .in-caret { display: inline-block; width: 8px; height: 15px; margin-left: 2px; vertical-align: -3px; background: #fff; animation: in-blink 1.1s steps(1) infinite; }
+@keyframes in-blink { 50% { opacity: 0; } }
+
+/* mock sticky note (looks like the real one) */
+.in-ov .in-sticky { margin: 6px 0 12px; background: #fff3a6; color: #4a3f00; text-shadow: none; transform: rotate(-1deg); border-radius: 2px 2px 16px 2px; padding-bottom: 12px;
+  box-shadow: 0 14px 26px -8px rgba(0,0,0,.35), 0 2px 4px rgba(0,0,0,.15); font: 13px/1.4 system-ui, sans-serif; }
+.in-ov .in-sh { display: flex; align-items: center; justify-content: space-between; padding: 6px 8px 6px 12px; background: #ffe56b; border-radius: 2px 2px 0 0; font: 700 15px "Segoe Print", "Bradley Hand", "Comic Sans MS", cursive; }
+.in-ov .in-eye { display: grid; place-items: center; width: 34px; height: 30px; border: 0; border-radius: 8px; background: rgba(74,63,0,.1); color: #4a3f00; cursor: pointer; text-shadow: none; animation: in-ping 1.8s ease-out infinite; }
+.in-ov .in-eye.off { opacity: .55; animation: none; }
+.in-ov .in-eye .ic { width: 18px; height: 18px; }
+@keyframes in-ping { from { box-shadow: 0 0 0 0 rgba(74,63,0,.45); } to { box-shadow: 0 0 0 10px rgba(74,63,0,0); } }
+.in-ov .in-sb { padding: 4px 14px 0; }
+.in-ov .in-sb .g { margin: 6px 0 2px; font-weight: 600; }
+.in-ov .in-sb h4 { margin: 10px 0 2px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; opacity: .6; }
+.in-ov .in-ss { display: flex; gap: 9px; padding: 5px 0; align-items: flex-start; }
+.in-ov .in-ss i { flex: none; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font: normal 11px system-ui; background: rgba(74,63,0,.14); }
+.in-ov .in-ss small { display: block; font-weight: 400; opacity: .8; margin-top: 1px; }
+.in-ov .in-ss.cur { font-weight: 700; } .in-ov .in-ss.cur i { background: #4a3f00; color: #fff3a6; }
+.in-ov .in-eyestate { margin: 0 0 12px; padding: 10px 14px; border-radius: 16px; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3); min-height: 62px; }
+.in-ov .in-eyestate b { display: block; }
+
+/* footer: dots + buttons */
+.in-ov .in-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-top: 8px; }
+.in-ov .in-dots { display: flex; gap: 7px; }
+.in-ov .in-dots i { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.4); }
+.in-ov .in-dots i.on { width: 22px; border-radius: 8px; background: #fff; }
+.in-ov .in-btns { display: flex; flex-wrap: wrap; gap: 10px; }
+.in-ov .in-btns button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 11px 18px; border-radius: 99px; border: 1px solid rgba(255,255,255,.6);
+  background: rgba(255,255,255,.2); color: #fff; font: 600 14px system-ui, sans-serif; text-shadow: none; box-shadow: none; cursor: pointer; transition: background .15s, transform .15s; }
+.in-ov .in-btns button:hover { background: rgba(255,255,255,.34); transform: translateY(-1px); }
+.in-ov .in-btns button.go { background: rgba(255,255,255,.94); color: #0f172a; border-color: #fff; }
+.in-ov .in-btns button.go:hover { background: #fff; }
+.in-ov button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.in-ov .in-eye:focus-visible { outline-color: #4a3f00; }
+.in-ov .in-btns .ic { width: 16px; height: 16px; }
+
+@media (max-width: 480px) {
+  .in-ov .in-pane { padding: 28px 22px 22px; }
+  .in-ov .in-skip { right: 16px; top: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .in-ov, .in-card, .in-ov .in-pane.in-fade, .in-ov .in-eye, .in-ov .in-caret, .in-ov .in-btns button { transition: none; animation: none; }
+}
